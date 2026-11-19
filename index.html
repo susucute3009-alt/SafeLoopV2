@@ -1,0 +1,187 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>SafeLoop – App prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0}
+:root{--bg:#F7F6EF;--w:#fff;--tx:#24342C;--t2:#6B7870;--g:#173F32;--g2:#47765A;--sg:#AFC6B2;--mt:#E7F0E7;--am:#D99A43;--rd:#C95D55;--amb:#FBF1E0;--rdb:#FBE9E7;--ln:#E4E8DF;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#101A15;--w:#1B2922;--tx:#E9F0EA;--t2:#9AA89F;--g:#47765A;--mt:#223229;--amb:#3A2E1A;--rdb:#3B2220;--ln:#2A3A31}}
+:root[data-theme=dark]{--bg:#101A15;--w:#1B2922;--tx:#E9F0EA;--t2:#9AA89F;--g:#47765A;--mt:#223229;--amb:#3A2E1A;--rdb:#3B2220;--ln:#2A3A31}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}html,body,#r{height:100%}
+body{background:var(--bg);color:var(--tx);font:15px/1.5 'Be Vietnam Pro',Inter,system-ui,-apple-system,'Segoe UI',sans-serif}
+.app{height:100%;max-width:430px;margin:0 auto;display:flex;flex-direction:column;background:var(--bg);position:relative;overflow:hidden}
+@media(min-width:500px){.app{border:1px solid var(--ln);box-shadow:0 10px 40px rgba(23,63,50,.12)}}
+.sc{flex:1;overflow-y:auto;padding:16px 18px 28px;animation:in .3s ease}
+@keyframes in{from{opacity:0;transform:translateY(6px)}}
+h1{font-size:25px;line-height:1.25;font-weight:700}h2{font-size:18px;font-weight:600;margin:20px 0 10px}
+.s{font-size:13px;color:var(--t2)}.b{font-weight:600}.mt{margin-top:10px}.mb{margin-bottom:12px}.ctr{text-align:center}.r{margin-left:auto}
+.card{background:var(--w);border-radius:20px;padding:16px;box-shadow:0 2px 14px rgba(23,63,50,.08);margin-bottom:12px;display:block;width:100%;text-align:left;font:inherit;color:inherit;border:0}
+.card.b{cursor:pointer}.am{background:var(--amb);box-shadow:inset 0 0 0 1px var(--am)}.rd{background:var(--rdb);box-shadow:inset 0 0 0 1px var(--rd)}
+.btn{display:block;width:100%;min-height:52px;border:0;border-radius:16px;background:var(--g);color:#fff;font-weight:600;font-size:16px;font-family:inherit;cursor:pointer;margin-top:10px;padding:12px}
+.btn.o{background:transparent;color:var(--g);box-shadow:inset 0 0 0 1.5px var(--sg)}.btn.r{background:var(--rd);color:#fff}
+.row{display:flex;align-items:center;gap:12px}.sp{justify-content:space-between}
+.chips{display:flex;gap:8px;overflow-x:auto;margin-bottom:14px;padding-bottom:2px}
+.chip{border:1px solid var(--sg);background:var(--w);color:var(--tx);padding:8px 14px;border-radius:99px;font:inherit;font-size:13px;cursor:pointer;white-space:nowrap;min-height:38px}
+.chip.on{background:var(--g);color:#fff;border-color:var(--g)}
+.nav{display:flex;background:var(--w);border-top:1px solid var(--ln);padding:6px 4px 8px}
+.nav button{flex:1;border:0;background:none;color:var(--t2);font:inherit;font-size:11px;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 0;cursor:pointer;min-height:50px}
+.nav .on{color:var(--g);font-weight:600}.nav .on svg{stroke-width:2.4}
+.tg{width:48px;height:28px;border-radius:99px;background:var(--sg);border:0;position:relative;cursor:pointer;flex:none}
+.tg:after{content:'';position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#fff;transition:.2s}
+.tg.on{background:var(--g2)}.tg.on:after{left:23px}
+textarea,input[type=text]{width:100%;font:inherit;font-size:14px;padding:12px;border-radius:14px;border:1px solid var(--sg);background:var(--bg);color:var(--tx);resize:vertical;margin-top:6px}
+input[type=checkbox]{width:20px;height:20px;accent-color:var(--g2);flex:none}
+.dot{width:9px;height:9px;border-radius:50%;background:var(--am);flex:none}
+.tag{font-size:11px;font-weight:600;padding:3px 10px;border-radius:99px;background:var(--mt);color:var(--g2)}
+.tag.a{background:var(--amb);color:#A06A1C;box-shadow:inset 0 0 0 1px var(--am)}.tag.r{background:var(--rd);color:#fff}
+.pb{display:flex;gap:4px;margin:6px 0 4px}.pb i{flex:1;height:5px;border-radius:5px;background:var(--sg);opacity:.45}.pb i.on{background:var(--g2);opacity:1}
+.bk{border:0;background:none;color:var(--g2);font:inherit;font-weight:600;display:flex;align-items:center;gap:2px;cursor:pointer;padding:4px 0;min-height:40px}
+.tl{border-left:2px solid var(--sg);margin-left:8px;padding-left:20px}
+.tl>div{position:relative;padding:0 0 16px;cursor:pointer}
+.tl>div:before{content:'';position:absolute;left:-28px;top:3px;width:14px;height:14px;border-radius:50%;background:var(--bg);border:2px solid var(--sg)}
+.tl .d:before{background:var(--g2);border-color:var(--g2)}
+.map{width:100%;display:block;border-radius:18px}.pl{transform-box:fill-box;transform-origin:center;animation:pl 2s infinite}@keyframes pl{to{transform:scale(2.4);opacity:0}}
+.em1{font-size:24px;line-height:1}.opt{display:flex;gap:14px;align-items:center;font-weight:600;border:2px solid transparent}.sel{border-color:var(--g2)}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}.g2 .card{margin:0}
+.ic{position:relative;border:0;background:var(--w);width:44px;height:44px;border-radius:50%;color:var(--g);cursor:pointer;display:grid;place-items:center;box-shadow:0 2px 10px rgba(23,63,50,.1)}
+.bd{position:absolute;top:2px;right:2px;background:var(--am);color:#fff;font-size:10px;font-style:normal;font-weight:700;min-width:16px;height:16px;border-radius:9px;display:grid;place-items:center}
+.full{position:absolute;inset:0;z-index:5;background:var(--mt);display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:48px 28px 32px;animation:in .4s}
+.orb{position:relative;width:250px;height:250px;display:grid;place-items:center}.orb>*{grid-area:1/1}.ph{font-size:22px;z-index:1}
+.br{width:230px;height:230px;border-radius:50%;background:radial-gradient(circle,var(--sg),var(--g2));animation:br 8s ease-in-out infinite;opacity:.8}
+@keyframes br{0%,100%{transform:scale(.55)}50%{transform:scale(1)}}
+.toast{position:absolute;left:18px;right:18px;bottom:88px;background:var(--g);color:#fff;padding:12px 16px;border-radius:14px;font-size:14px;z-index:9;animation:in .25s}
+ul{padding-left:18px;margin-top:6px}li{margin:3px 0}summary{font-weight:600;cursor:pointer;min-height:32px}
+@media(prefers-reduced-motion:reduce){*{animation-duration:.01s!important}}
+.h20{font-size:20px}.h18{font-size:18px}</style></head><body><div id="r"></div>
+<script src="https://cdn.jsdelivr.net/npm/react@18.3.1/umd/react.production.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/react-dom@18.3.1/umd/react-dom.production.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/htm@3.1.1/dist/htm.umd.js"></script>
+<script>
+const{useState,useEffect}=React;
+const h=htm.bind((t,p,...c)=>{if(p&&p.class){p={...p,className:p.class};delete p.class}return React.createElement(t,p,...c)});
+const P={home:'M3 11l9-8 9 8M5 10v10h14V10',loc:'M12 21s7-6 7-11a7 7 0 10-14 0c0 5 7 11 7 11zM12 12a2 2 0 100-4 2 2 0 000 4',alerts:'M6 16V11a6 6 0 1112 0v5l2 2H4zM10 21h4',support:'M12 20s-8-5-8-11a4.5 4.5 0 018-2.5A4.5 4.5 0 0120 9c0 6-8 11-8 11z',profile:'M12 12a4 4 0 100-8 4 4 0 000 8zM4 21a8 8 0 0116 0',back:'M15 5l-7 7 7 7'};
+const I=({n,s=22})=>h`<svg width=${s} height=${s} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d=${P[n]}/></svg>`;
+const Av=({s=52})=>h`<svg width=${s} height=${s} viewBox="0 0 48 48"><circle cx="24" cy="24" r="24" fill="#AFC6B2"/><circle cx="24" cy="26" r="11" fill="#F6D9BE"/><path d="M12 24c0-9 7-13 13-13s11 5 11 13c-4-5-9-6-12-6s-8 1-12 6z" fill="#3B3028"/><circle cx="20" cy="27" r="1.4" fill="#3B3028"/><circle cx="28" cy="27" r="1.4" fill="#3B3028"/><path d="M21 31q3 2.5 6 0" stroke="#3B3028" fill="none" stroke-linecap="round"/></svg>`;
+const Logo=()=>h`<svg width="30" height="30" viewBox="0 0 24 24"><path d="M12 2l8 3v6c0 5-3.5 9-8 11-4.5-2-8-6-8-11V5z" fill="#173F32"/><circle cx="12" cy="10" r="2.6" fill="#AFC6B2"/><path d="M7.5 16c1-3 8-3 9 0" stroke="#AFC6B2" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg>`;
+const Mp=({big})=>h`<svg viewBox="0 0 340 220" preserveAspectRatio="xMidYMid slice" class="map" style=${{height:big?400:150}}><rect width="340" height="220" fill="#E9F1E3"/><rect x="20" y="130" width="70" height="60" rx="14" fill="#D3E4CC"/><rect x="255" y="15" width="65" height="50" rx="14" fill="#D3E4CC"/><path d="M0 120H340M110 0V220M240 0V220M0 40L340 90" stroke="#fff" stroke-width="11" fill="none"/><circle cx="240" cy="120" r="48" fill="#47765A" fill-opacity=".14" stroke="#47765A" stroke-dasharray="5 4"/><circle cx="70" cy="60" r="14" fill="#fff"/><text x="70" y="66" text-anchor="middle" font-size="15">🏠</text><circle cx="285" cy="170" r="14" fill="#fff"/><text x="285" y="176" text-anchor="middle" font-size="15">🏫</text><circle class="pl" cx="240" cy="120" r="15" fill="#47765A"/><circle cx="240" cy="120" r="15" fill="#173F32" stroke="#fff" stroke-width="3"/><text x="240" y="124" text-anchor="middle" font-size="10" font-weight="700" fill="#fff">MA</text></svg>`;
+const ORD=['detail','verify','pause','connect','act','school','follow'],LB=['Alert','Check','Pause','Talk','Act','School','Follow up'];
+const TL=['Alert recorded','Child’s status checked','Talked with child','Contacted school','Waiting for reply','Support plan agreed','Review the situation after follow-up'];
+const STT=['Not handled','Monitoring','Coordinating','Completed'],CT=['Homeroom teacher','School counselor','School leadership'];
+const TY={a:'Repeated impacts',l:'Activity log',s:'SOS'};
+const AL=[{id:1,t:'a',title:'Multiple unusual impacts recorded',time:'14:20 – 14:23',place:'At school',n:5,day:'Today'},{id:2,t:'l',title:'One impact signal recorded',time:'11:05',place:'At school',day:'Today'},{id:3,t:'l',title:'One impact signal recorded',time:'16:40',place:'On the way home',day:'Yesterday'}];
+const SOSA={id:9,t:'s',title:'Your child pressed the SOS button',time:'14:31',place:'Near school',day:'Today'};
+const VO=[['✅','My child is safe'],['🤝','My child needs support'],['📵','I can’t reach my child']];
+const VM=['Thank you. Note it down, and talk gently with your child when the time feels right.','Stay with your child and ask what they need. If they are in danger or seriously hurt, switch to urgent action now.','Try calling again, or ask a teacher or trusted adult near your child. If you still can’t reach them, switch to urgent action.'];
+const SIT=[{t:'My child doesn’t want to share',o:'“Mom/Dad is here if you want to talk. No need to tell me right now.”',q:['What was the best part of your day?','Is there anything you’d like me to help with?'],x:['“Why won’t you just tell me?”','Pushing your child to talk right away']},{t:'My child seems sad or scared',o:'“I noticed you seem a bit different today. I care about you a lot.”',q:['How are you feeling right now?','What’s been bothering you?'],x:['“There’s nothing to be scared of.”','Guessing for your child']},{t:'My child says they were hurt',o:'“Thank you for telling me. None of this is your fault.”',q:['Where and when did it happen?','Does anything hurt right now?'],x:['Firing questions or suggesting answers','“Why didn’t you hit back?”']},{t:'I suspect a problem at school',o:'“How has school been lately? Tell me about your day.”',q:['What do you usually do at recess?','Where at school do you feel safe?'],x:['Concluding your child is being bullied','Promising to “deal with” someone']}];
+const TIPS=['Look at your child, listen, and hold off on advice','Repeat back what they said so they feel understood','Afterwards, write down their exact words'];
+const PATHS=[{k:'MONITOR',d:'Your child is safe and nothing concerning has been confirmed',a:['Record the event','Keep monitoring','Have a gentle conversation with your child'],b:'Save and monitor',go:'follow'},{k:'TALK TO SCHOOL',d:'Your child shares something concerning, or distress continues',a:['Listen and document','Speak with the homeroom teacher or school counselor','Ask for a private meeting and agree on a support plan'],b:'Draft a message to the school',go:'school'},{k:'URGENT ACTION',d:'Immediate danger, serious injury, or an SOS',a:['Put your child’s safety first','Contact your child or a trusted adult nearby','Call emergency services if needed','Notify the school’s safeguarding contact'],b:'Open emergency guide',go:'sos'}];
+const EM=[['😟','Worried','Worrying about your child is completely natural. Take a few slow breaths, then start by checking how your child is.'],['😠','Angry','Anger shows how much you love your child. Wait a moment before messaging or calling anyone, so your words come out clear and calm.'],['😕','Confused','Not knowing yet is normal. Start with what has been recorded and ask your child gently.'],['😌','Calm','That’s good. Keep this pace as you talk with your child and listen.']];
+
+function Breath({done}){const[n,setN]=useState(0);useEffect(()=>{const t=setInterval(()=>setN(x=>x+1),4000);return()=>clearInterval(t)},[]);const f=n>=6;
+return h`<div class="full"><p class="ctr b">Before you act, take a moment for yourself.</p><div class="orb"><div class="br"></div><b class="ph">${f?'Well done':n%2?'Breathe out...':'Breathe in...'}</b></div><div class="ctr"><p>You don’t have to solve everything right away.</p><p class="s mt">Optional. If your child is in danger, contact them right away. No need to breathe first.</p><button class="btn ${f?'':'o'}" onClick=${done}>${f?'Continue':'Skip'}</button></div></div>`}
+
+function App(){
+const[S,setS]=useState({tab:'home',v:null,j:0,st:null,emo:null,sit:0,kid:'',obs:'',ask:'to talk privately and look into the situation together, and to keep an eye on how our child is doing',ctc:0,ed:null,done:[0],cs:0,rep:[],read:0,sos:0,sr:0,f:'all',o:0,toast:'',ret:null,tg:{imp:1,safe:1,share:1,dad:1,ba:0,zS:1,zH:1,zO:0,arr:1,leave:1}});
+const u=o=>setS(p=>({...p,...o})),go=(v,x={})=>u({v,j:0,...x}),ad=i=>[...new Set([...S.done,i])];
+const tt=m=>{u({toast:m});clearTimeout(window._t);window._t=setTimeout(()=>u({toast:''}),2400)};
+const Tg=k=>h`<button class="tg ${S.tg[k]?'on':''}" aria-label="Toggle" onClick=${()=>u({tg:{...S.tg,[k]:S.tg[k]?0:1}})}></button>`;
+const unread=(S.read?0:1)+(S.sos&&!S.sr?1:0);
+const Sec=(t,it,c='')=>h`<div class="card ${c}"><p class="b">${t}</p><ul>${it.map(x=>h`<li key=${x}>${x}</li>`)}</ul></div>`;
+const Rw=(e,t,s,r)=>h`<div class="card row sp" key=${t} onClick=${r?null:()=>tt('Simulated: open “'+t+'”')}><div class="row"><span class="em1">${e}</span><div><p class="b">${t}</p><p class="s">${s}</p></div></div>${r||h`<span class="s">›</span>`}</div>`;
+const Hd=(t,s)=>h`<div><h1>${t}</h1><p class="s mb">${s}</p></div>`;
+
+const Home=()=>h`<div><div class="row sp mb"><div class="row"><${Logo}/><b class="h20">SafeLoop</b></div><button class="ic" aria-label="Notifications" onClick=${()=>u({tab:'alerts'})}><${I} n="alerts"/>${unread>0&&h`<i class="bd">${unread}</i>`}</button></div>
+<h1>Good morning!</h1><p class="s mb">Protecting Children, Empowering Parents.</p>
+<div class="card row"><${Av}/><div><p class="b h18">Minh Anh</p><p class="s">Age 10 · Grade 5 · At school</p></div></div>
+<div class="card b" onClick=${()=>u({tab:'loc'})}><${Mp}/><p class="b mt">Nguyen Van Troi Primary School</p><div class="row s"><span>Location updated at 14:20</span><span class="tag">Connected</span><span class="tag">🔋 78%</span></div></div>
+<div class="card"><p class="b">Today’s overview</p><p class="s">Based on simulated data</p><ul><li>2 single impact signals in the activity log</li><li>1 alert for you to review</li><li>Band connected over a stable 4G signal</li></ul></div>
+<div class="card b am" onClick=${()=>go('detail',{j:1,read:1})}><div class="row"><span class="tag a">Needs review</span>${!S.read&&h`<i class="dot"></i>`}<span class="s r">14:23</span></div><p class="b mt">Multiple unusual impacts recorded</p><p class="s">14:20 – 14:23 · At school</p></div>
+<div class="g2">${[['📍','View location',()=>u({tab:'loc'})],['🔔','Check alerts',()=>u({tab:'alerts'})],['💚','Support my child',()=>u({tab:'support'})]].map(([e,t,f])=>h`<button key=${t} class="card b ctr" onClick=${f}><span class="em1">${e}</span><p class="b mt">${t}</p></button>`)}<button class="card b ctr rd" onClick=${()=>u({sos:1,sr:0,v:'sos',j:0})}><span class="em1">🆘</span><p class="b mt">Simulate SOS</p></button></div></div>`;
+
+const Loc=()=>h`<div>${Hd('Location','Simulated location of Minh Anh')}<${Mp} big=${1}/>
+<div class="card mt"><p class="b">Nguyen Van Troi Primary School</p><div class="row s mt"><span class="tag">GPS: good</span><span class="tag">Updated 14:20</span><span class="tag">🔋 78%</span></div></div>
+<h2>Safe zones</h2>${[['🏫','School','150 m radius','zS'],['🏠','Home','100 m radius','zH'],['👵','Grandma’s house','100 m radius','zO']].map(([e,t,s,k])=>Rw(e,t,s,Tg(k)))}
+<h2>Notifications</h2>${Rw('📥','When my child arrives','Get a gentle notification',Tg('arr'))}${Rw('📤','When my child leaves','Get a gentle notification',Tg('leave'))}
+<h2>Today’s history</h2><div class="tl">${[['07:25','Left home'],['07:50','Arrived at school'],['11:05','School yard'],['14:20','Latest location: school']].map(([a,b])=>h`<div key=${a}><p class="b">${a}</p><p class="s">${b}</p></div>`)}</div></div>`;
+
+const Alerts=()=>{const L=(S.sos?[SOSA]:[]).concat(AL).filter(a=>S.f=='all'||a.t==S.f);
+return h`<div>${Hd('Alerts','Only the events worth your attention')}<div class="chips">${[['all','All'],['l','Log'],['a','Repeated impacts'],['s','SOS']].map(([k,t])=>h`<button key=${k} class="chip ${S.f==k?'on':''}" onClick=${()=>u({f:k})}>${t}</button>`)}<button class="chip on" onClick=${()=>tt('This demo has only one child profile')}>Minh Anh</button></div>
+${!L.length&&h`<div class="card ctr"><p class="b">No alerts yet</p><p class="s">New events will appear here.</p></div>`}
+${L.map(a=>h`<div key=${a.id} class="card b ${a.t=='a'?'am':a.t=='s'?'rd':''}" onClick=${()=>a.t=='a'?go('detail',{j:1,read:1}):a.t=='s'?go('sos',{sr:1}):u({o:S.o==a.id?0:a.id})}><div class="row"><span class="tag ${a.t=='a'?'a':a.t=='s'?'r':''}">${TY[a.t]}</span>${(a.t=='a'&&!S.read||a.t=='s'&&!S.sr)&&h`<i class="dot"></i>`}<span class="s r">${a.day} · ${a.time}</span></div><p class="b mt">${a.title}</p><p class="s">${a.place}${a.n?' · '+a.n+' signals':''}</p>${S.o==a.id&&h`<p class="s mt">A single signal is only saved to the activity log and usually needs no immediate action. SafeLoop only alerts you when several signals occur in a short time.</p>`}</div>`)}</div>`};
+
+const Detail=()=>h`<div><span class="tag a">Needs review</span><h1 class="mt">Multiple unusual impacts recorded</h1><p class="s mb">14:20 – 14:23 · At school</p>
+${Sec('What the system recorded',['5 unusual impact signals','From 14:20 to 14:23','Latest GPS location: Nguyen Van Troi Primary School','Band connected · Battery 78%'])}
+${Sec('What we can’t determine yet',['Whether another person was involved','What caused the impacts','Whether bullying occurred'],'am')}
+${Sec('What you can do',['Check on your child','Talk gently with your child','Read the guidance on next steps'])}
+<button class="btn" onClick=${()=>go('verify',{j:1})}>Check on my child</button><button class="btn o" onClick=${()=>go('act',{j:1})}>Learn what to do</button><p class="s ctr mt">Data and sensor thresholds are simulated for illustration only.</p></div>`;
+
+const Verify=()=>h`<div>${Hd('How is your child?','Contact Minh Anh, then choose the current status.')}
+${VO.map(([e,t],i)=>h`<button key=${i} class="card b opt ${S.st===i?'sel':''}" onClick=${()=>u({st:i,done:ad(1)})}><span class="em1">${e}</span>${t}</button>`)}
+${S.st!=null&&h`<div class="card mt"><p>${VM[S.st]}</p></div>`}
+${S.st>0&&h`<button class="btn r" onClick=${()=>go('sos')}>Switch to urgent action</button>`}
+<button class="btn" onClick=${()=>go('pause',{j:1})}>Continue</button></div>`;
+
+const Pause=()=>h`<div>${Hd('Take a moment','Optional. You can skip this.')}
+${Sec('What we know',['The device recorded 5 impact signals within 3 minutes'])}${Sec('What we don’t know',['The cause, or whether anyone else was involved'],'am')}
+<div class="card rd"><p class="s">If your child is in danger, contact them right away. You don’t need to breathe first.</p></div>
+<button class="btn" onClick=${()=>u({v:'breath',ret:'connect',j:1})}>Breathe with SafeLoop</button><button class="btn o" onClick=${()=>go('connect',{j:1})}>Skip and continue</button></div>`;
+
+const Guide=(j)=>{const x=SIT[S.sit];return h`<div>${Hd('Talk with your child','Pick the situation closest to yours.')}
+${SIT.map((s,i)=>h`<button key=${i} class="card b opt ${S.sit===i?'sel':''}" onClick=${()=>u({sit:i})}>${s.t}</button>`)}
+<div class="card"><p class="b">Suggested opening</p><p class="mt">${x.o}</p></div>${Sec('Good questions to ask',x.q)}${Sec('Try to avoid',x.x,'am')}${Sec('Active listening',TIPS)}
+${j?h`<div class="card"><p class="b">What your child said</p><p class="s">Write it down word for word, without suggesting answers.</p><textarea rows="3" placeholder="My child said..." value=${S.kid} onChange=${e=>u({kid:e.target.value})}></textarea></div><button class="btn" onClick=${()=>go('act',{j:1,done:ad(2)})}>Continue</button>`:null}</div>`};
+
+const Act=()=>h`<div>${Hd('What should I do?','Choose the path that best matches what you know.')}
+${[2,0,1].map(i=>{const p=PATHS[i];return h`<div key=${i} class="card ${i==2?'rd':i==1?'am':''}"><span class="tag ${i==2?'r':i==1?'a':''}">${p.k}</span><p class="b mt">${p.d}</p><ul>${p.a.map(x=>h`<li key=${x}>${x}</li>`)}</ul><button class="btn ${i==2?'r':'o'}" onClick=${()=>go(p.go,{j:S.j,cs:i==0?1:S.cs,done:i==0?ad(0):S.done})}>${p.b}</button></div>`})}</div>`;
+
+const School=()=>{const acts=S.done.includes(2)?'checked on our child’s status and talked with our child':'checked on our child’s status';
+const auto=`Dear ${CT[S.ctc].toLowerCase()},\n\nOur family would like to understand more about how our child has been doing recently.\n\n• The device recorded: 5 unusual impact signals between 14:20 and 14:23 on Nov 20, 2026, while our child was at school.\n• What our child shared: ${S.kid||'(not recorded yet)'}\n• Our observations: ${S.obs||'(not recorded yet)'}\n• We have ${acts}.\n\nWe haven’t identified a cause and aren’t drawing any conclusions. We would like ${S.ask}, so that our child has a safe learning environment.\n\nThank you.`;
+const txt=S.ed??auto;
+const cp=async()=>{try{await navigator.clipboard.writeText(txt);tt('Message copied')}catch(e){tt('Couldn’t copy automatically. Please select and copy the text.')}};
+return h`<div>${Hd('Talk with the school','Draft a message from recorded facts. SafeLoop never sends it.')}
+<div class="chips">${CT.map((c,i)=>h`<button key=${c} class="chip ${S.ctc==i?'on':''}" onClick=${()=>u({ctc:i,ed:null})}>${c}</button>`)}</div>
+<p class="s mb">For everyday concerns, it often helps to start with the homeroom teacher or counselor. You can contact school leadership at any time.</p>
+${Sec('1. What the system recorded',['Nov 20, 2026 · 14:20 – 14:23','5 unusual impact signals','Latest GPS: Nguyen Van Troi Primary School'])}
+<div class="card"><p class="b">2. What your child shared</p><textarea rows="2" value=${S.kid} onChange=${e=>u({kid:e.target.value,ed:null})}></textarea></div>
+<div class="card"><p class="b">3. Your observations</p><textarea rows="2" placeholder="For example: my child was quieter today" value=${S.obs} onChange=${e=>u({obs:e.target.value,ed:null})}></textarea><p class="b mt">Support requested from the school</p><input type="text" value=${S.ask} onChange=${e=>u({ask:e.target.value,ed:null})}/></div>
+<div class="card"><p class="b">Message draft</p><textarea rows="11" value=${txt} onChange=${e=>u({ed:e.target.value})}></textarea><button class="btn" onClick=${cp}>Copy message</button><button class="btn o" onClick=${()=>u({ed:null})}>Regenerate from facts</button></div>
+<details class="card"><summary>Meeting checklist</summary>${['What do we know?','What has my child shared?','What do we still need to understand?','What support does my child need?','What should the school help look into?','What is the follow-up plan?'].map(x=>h`<label key=${x} class="row mt"><input type="checkbox"/>${x}</label>`)}</details>
+<details class="card"><summary>Escalation pathway</summary><ul><li>Level 1: Homeroom teacher</li><li>Level 2: School counselor or child safeguarding contact</li><li>Level 3: School leadership or the appropriate authorities when necessary</li></ul><p class="s mt">In an emergency, skip the levels and reach out immediately.</p></details>
+<button class="btn" onClick=${()=>go('follow',{j:1,cs:2,done:[...new Set([...S.done,3,4])]})}>I contacted the school · add to case</button></div>`};
+
+const Follow=()=>h`<div>${Hd('Case follow-up','Unusual impacts · Nov 20, 2026')}
+<div class="card"><p class="b">Status</p><div class="chips mt">${STT.map((x,i)=>h`<span key=${x} class="chip ${S.cs==i?'on':''}">${x}</span>`)}</div><button class="btn o" onClick=${()=>{u({cs:(S.cs+1)%4});tt('Status updated')}}>Update status</button></div>
+<div class="card"><p class="b mb">Timeline (tap to mark)</p><div class="tl">${TL.map((t,i)=>h`<div key=${i} class=${S.done.includes(i)?'d':''} onClick=${()=>u({done:S.done.includes(i)?S.done.filter(x=>x!=i):[...S.done,i]})}><p class="b">${t}</p></div>`)}</div></div>
+<div class="card"><p class="b">Recurring incidents</p>${S.rep.length?h`<ul>${S.rep.map(r=>h`<li key=${r}>${r}</li>`)}</ul>`:h`<p class="s">Nothing else recorded yet.</p>`}<button class="btn o" onClick=${()=>u({rep:[...S.rep,'#'+(S.rep.length+1)+' · logged by parent, '+new Date().toLocaleDateString('en-US')]})}>Log a recurring incident</button></div>
+<button class="btn" onClick=${()=>u({v:null,tab:'home'})}>Back to home</button></div>`;
+
+const Sos=()=>h`<div><div class="card rd"><span class="tag r">SOS</span><h1 class="mt">Your child pressed SOS</h1><p class="s">14:31 · Near Nguyen Van Troi Primary School. The band only vibrates gently to confirm with your child.</p></div>
+<p class="s mb">Put your child’s safety first. You don’t need to follow any order.</p>
+<button class="btn r" onClick=${()=>tt('Simulated: calling Minh Anh')}>Call Minh Anh</button>
+<button class="btn o" onClick=${()=>tt('Simulated: calling a trusted adult near school')}>Call a trusted adult near school</button>
+<button class="btn o" onClick=${()=>tt('Simulated: calling ambulance 115 / police 113')}>Call ambulance 115 / police 113</button>
+<button class="btn o" onClick=${()=>tt('Simulated: contacting the school safeguarding lead')}>Notify the school</button>
+<button class="btn o" onClick=${()=>u({v:null,tab:'loc'})}>See my child’s location</button>
+<button class="btn o" onClick=${()=>go('follow',{cs:2,done:ad(3)})}>Add to case follow-up</button></div>`;
+
+const Emo=()=>h`<div>${Hd('How are you feeling?','A tool for self-reflection, not a medical or psychological assessment.')}
+<div class="g2">${EM.map(([e,t],i)=>h`<button key=${t} class="card b ctr opt ${S.emo===i?'sel':''}" style=${{flexDirection:'column',gap:6}} onClick=${()=>u({emo:i})}><span class="em1">${e}</span>${t}</button>`)}</div>
+${S.emo!=null&&h`<div class="card mt"><p>${EM[S.emo][2]}</p></div>`}${S.emo!=null&&S.emo<2&&h`<button class="btn" onClick=${()=>u({v:'breath',ret:'emo'})}>Breathe with SafeLoop</button>`}</div>`;
+
+const Sup=()=>h`<div>${Hd('Support','Helping you stay calm and be there for your child.')}
+<div class="g2">${[['🌿','Calm down','A short breathing session',()=>u({v:'breath',ret:null})],['🧡','How are you feeling?','Check in with yourself',()=>go('emo')],['💬','Talk with your child','4 situations',()=>go('guide')],['🧭','What should I do?','Choose a path',()=>go('act')]].map(([e,t,s,f])=>h`<button key=${t} class="card b" onClick=${f}><span class="em1">${e}</span><p class="b mt">${t}</p><p class="s">${s}</p></button>`)}</div>
+<h2>Working with the school</h2>${Rw('✉️','Draft a message to the school','From recorded facts',h`<button class="chip on" onClick=${()=>go('school')}>Open</button>`)}${Rw('📋','Case follow-up','Status: '+STT[S.cs],h`<button class="chip on" onClick=${()=>go('follow')}>Open</button>`)}</div>`;
+
+const Prof=()=>h`<div>${Hd('Profile','Family and device')}
+${Rw('🧒','Child profile','Minh Anh · Age 10 · Grade 5')}${Rw('👩','Parent profile','Minh Anh’s mom · Account owner')}${Rw('⌚','SafeLoop Band','Stable 4G · Battery 78%')}${Rw('📞','Emergency contacts','Mom · Dad · Homeroom teacher')}
+<h2>Authorized caregivers</h2>${Rw('👨','Dad','Location and alerts',Tg('dad'))}${Rw('👵','Grandma','Location only',Tg('ba'))}<button class="btn o" onClick=${()=>tt('Simulated: invitation sent to caregiver')}>Add a caregiver</button>
+<h2>Notifications and privacy</h2>${Rw('📳','Repeated unusual impacts','Notify the parent',Tg('imp'))}${Rw('🆘','SOS notifications','Always on for safety',h`<span class="tag">Always on</span>`)}${Rw('📍','Location sharing','With authorized caregivers',Tg('share'))}${Rw('🔐','Data and permissions','Manage stored data')}${Rw('💡','Help Center','Guides and contact')}
+<p class="s ctr mt">Prototype: location and sensor data are simulated.</p></div>`;
+
+const V={detail:Detail,verify:Verify,pause:Pause,connect:()=>Guide(1),act:Act,school:School,follow:Follow,sos:Sos,emo:Emo,breath:()=>null,guide:()=>Guide(0)},T={home:Home,loc:Loc,alerts:Alerts,support:Sup,profile:Prof};
+const ix=ORD.indexOf(S.v),back=()=>u({v:S.j&&ix>0?ORD[ix-1]:null});
+return h`<div class="app">
+<div class="sc" key=${S.v||S.tab}>${S.v?h`<div><button class="bk" onClick=${back}><${I} n="back" s=${20}/>${S.j&&ix>0?'Previous step':'Back'}</button>${S.j&&ix>=0?h`<div><div class="pb">${ORD.map((x,i)=>h`<i key=${x} class=${i<=ix?'on':''}></i>`)}</div><p class="s mb">Step ${ix+1}/7 · ${LB[ix]}</p></div>`:null}${V[S.v]()}</div>`:T[S.tab]()}</div>
+${S.v=='breath'&&h`<${Breath} done=${()=>u({v:S.ret})}/>`}
+${S.toast&&h`<div class="toast" role="status">${S.toast}</div>`}
+<nav class="nav">${[['home','Home'],['loc','Location'],['alerts','Alerts'],['support','Support'],['profile','Profile']].map(([k,t])=>h`<button key=${k} class=${S.tab==k&&!(S.v&&S.j)?'on':''} onClick=${()=>u({tab:k,v:null})}><${I} n=${k}/>${t}</button>`)}</nav></div>`}
+ReactDOM.createRoot(document.getElementById('r')).render(h`<${App}/>`);
+</script></body></html>
